@@ -1,4 +1,4 @@
 node_modules/
 output.css
 tmp/
-*._templ.go
+**_templ.go

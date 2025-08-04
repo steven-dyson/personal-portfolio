@@ -6,7 +6,7 @@ templ Hero(greeting string, name string, image string) {
 			<img
 				src={ image }
 				alt="image of steven dyson"
-				class="max-w-sm rounded-full shadow-2xl bg-white border-4 border-blue-600"
+				class="max-w-sm rounded-full shadow-2xl bg-white border-4 border-blue-600 w-full"
 				fetchpriority="high"
 				loading="eager"
 				width="400"
@@ -19,12 +19,14 @@ templ Hero(greeting string, name string, image string) {
 				</h1>
 				<p class="text-lg">Full-stack developer passionate about building modern web applications with Go, HTMX, and cutting-edge technologies.</p>
 				<div class="flex gap-5">
-					<button type="button" class="btn btn-primary">
-						<span>
-							@Icon("envelope", "size-5")
-						</span>
-						Get in touch
-					</button>
+					<a href="mailto:steven.dyson@proton.me">
+						<button type="button" class="btn btn-primary">
+							<span>
+								@Icon("envelope", "size-5")
+							</span>
+							Get in touch
+						</button>
+					</a>
 					<a href="https://github.com/steven-dyson" target="blank">
 						<button type="button" class="btn btn-outline hover:border-white hover:bg-primary">
 							<span>

@@ -42,7 +42,7 @@ func Hero(greeting string, name string, image string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" alt=\"image of steven dyson\" class=\"max-w-sm rounded-full shadow-2xl bg-white border-4 border-blue-600\" fetchpriority=\"high\" loading=\"eager\" width=\"400\" height=\"400\"><div class=\"flex flex-col gap-8\"><h1 class=\"text-6xl font-bold flex flex-col gap-3\"><span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" alt=\"image of steven dyson\" class=\"max-w-sm rounded-full shadow-2xl bg-white border-4 border-blue-600 w-full\" fetchpriority=\"high\" loading=\"eager\" width=\"400\" height=\"400\"><div class=\"flex flex-col gap-8\"><h1 class=\"text-6xl font-bold flex flex-col gap-3\"><span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -68,7 +68,7 @@ func Hero(greeting string, name string, image string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span></h1><p class=\"text-lg\">Full-stack developer passionate about building modern web applications with Go, HTMX, and cutting-edge technologies.</p><div class=\"flex gap-5\"><button type=\"button\" class=\"btn btn-primary\"><span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span></h1><p class=\"text-lg\">Full-stack developer passionate about building modern web applications with Go, HTMX, and cutting-edge technologies.</p><div class=\"flex gap-5\"><a href=\"mailto:steven.dyson@proton.me\"><button type=\"button\" class=\"btn btn-primary\"><span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -76,7 +76,7 @@ func Hero(greeting string, name string, image string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span> Get in touch</button> <a href=\"https://github.com/steven-dyson\" target=\"blank\"><button type=\"button\" class=\"btn btn-outline hover:border-white hover:bg-primary\"><span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span> Get in touch</button></a> <a href=\"https://github.com/steven-dyson\" target=\"blank\"><button type=\"button\" class=\"btn btn-outline hover:border-white hover:bg-primary\"><span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

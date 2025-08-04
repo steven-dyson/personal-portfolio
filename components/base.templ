@@ -1,0 +1,41 @@
+package components
+
+templ Base() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<title>Steve Dyson Portfolio</title>
+			<meta charset="utf-8"/>
+			<meta name="description" content="Person portfolio page of Steven Dyson, a software engineer in the Duluth, GA area"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<!-- Styles, fonts, and frameworks -->
+			<link href="../static/styles/output.css" rel="stylesheet"/>
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+			<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script>
+			<!-- Favicon -->
+			<link rel="icon" href="/favicon.ico" sizes="any"/>
+			<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+			<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+			<!-- Apple & Android -->
+			<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+			<link rel="manifest" href="/site.webmanifest"/>
+			<meta name="theme-color" content="#2b7fff"/>
+			<!-- Social  -->
+			<meta property="og:title" content="Steve Dyson Portfolio"/>
+			<meta property="og:description" content="A showcase of Steve Dyson's development and architecture work."/>
+			<meta property="og:image" content="/android-chrome-192x192.png"/>
+			<meta property="og:url" content="https://sdyson.dev"/>
+			<meta name="twitter:site" content="@sdysondev"/>
+			<meta name="twitter:card" content="summary_large_image"/>
+		</head>
+		<body class="bg-base-100">
+			@Navbar()
+			<main>
+				{ children... }
+			</main>
+			@Footer()
+		</body>
+	</html>
+}

@@ -1,0 +1,29 @@
+package components
+
+templ CardImage(link string, image string, title string, p string, badges []string) {
+	<a href={ link } target="blank">
+		<div class="card h-full shadow-sm bg-base-300 border-2 border-primary hover:scale-105 transition-all duration-300">
+			<figure class="relative h-[160px] bg-secondary overflow-hidden">
+				<img
+					src={ image }
+					alt={ title }
+					class="absolute top-0 left-0 w-full object-cover object-top"
+					loading="lazy"
+					width="400"
+					height="300"
+				/>
+			</figure>
+			<div class="card-body gap-6">
+				<h2 class="card-title">
+					{ title }
+				</h2>
+				<p>{ p }</p>
+				<div class="card-actions justify-start">
+					for _, skill := range badges {
+						<div class="badge badge-soft badge-outline font-bold p-3">{ skill }</div>
+					}
+				</div>
+			</div>
+		</div>
+	</a>
+}

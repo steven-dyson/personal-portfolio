@@ -1,0 +1,14 @@
+{
+  "name": "your-project-name",
+  "version": "1.0.0",
+  "description": "A Go project with Tailwind CSS v4, HTMX, and templ",
+  "scripts": {
+    "build:css": "tailwindcss -i ./static/styles/input.css -o ./static/styles/output.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.11",
+    "@tailwindcss/cli": "^4.1.11",
+    "daisyui": "^5.0.50"
+  },
+  "license": "MIT"
+}

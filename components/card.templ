@@ -1,0 +1,13 @@
+package components
+
+templ Card(icon string, title string, p string) {
+	<div class="card bg-base-300 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+		<div class="card-body items-center gap-6">
+			<div class="p-4 bg-primary rounded-full flex items-center justify-center mx-auto">
+				@Icon(icon, "size-10")
+			</div>
+			<h3 class="card-title text-center text-2xl">{ title }</h3>
+			<p class="text-center">{ p }</p>
+		</div>
+	</div>
+}

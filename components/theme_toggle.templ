@@ -1,0 +1,25 @@
+package components
+
+templ ThemeToggle() {
+	<label class="toggle text-base-content">
+		<input id="theme-controller" type="checkbox" class="theme-controller"/>
+		<span class="sr-only">Toggle dark mode</span>
+	</label>
+	<script>
+		const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+		const stored = localStorage.getItem("theme");
+		const theme = stored || prefersDark ? "mydark" : "mylight"
+		const themeController = document.getElementById("theme-controller");
+
+		themeController.value = theme === "mydark" ? "mylight" : "mydark"
+
+		if (stored === themeController.value) {
+			themeController.checked = true;
+		}
+
+		themeController.addEventListener("change", (e) => {
+			const current = localStorage.getItem("theme");
+			localStorage.setItem("theme", current === "mydark" ? "mylight" : "mydark");
+		})
+	</script>
+}

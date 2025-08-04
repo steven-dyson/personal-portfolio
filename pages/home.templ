@@ -1,0 +1,73 @@
+package pages 
+
+import "github.com/steven-dyson/personal-portfolio/components"
+
+templ Home() {
+	@components.Base() {
+		@components.Hero("Hi, Im", "Steven Dyson", "https://res.cloudinary.com/dvpy0nzax/image/upload/w_400,h_400/v1754265675/photo_s6n1ns.webp")
+		@components.Cards("about", "About Me", "I'm a passionate developer who loves creating efficient, scalable web applications using modern technologies like Go, HTMX, and Tailwind CSS.") {
+			@components.Card(
+				"code-bracket",
+				"Backend Development",
+				"Building robust APIs and server-side applications with Go, focusing on performance and scalability.",
+			)
+			@components.Card(
+				"paint-brush",
+				"Frontend Design",
+				"Creating beautiful, responsive user interfaces with HTMX and Tailwind CSS for modern web experiences.",
+			)
+			@components.Card(
+				"server-stack",
+				"System Architecture",
+				"Designing and implementing scalable system architectures with focus on performance and maintainability.",
+			)
+		}
+		@components.Rows("skills", "Skills & Technologies", "Technologies I work with to bring ideas to life") {
+			@components.Skills("Frontend", []string{
+				"HTML", "CSS", "JavaScript", "TypeScript",
+				"Tailwind CSS", "DaisyUI", "HTMX",
+				"Next.js", "Svelte", "Astro", "Vite",
+			})
+			@components.Skills("Backend", []string{
+				"Go", "Fiber", "sqlx", "SQL", "REST APIs",
+				"Python", "Lua", "Bash",
+			})
+			@components.Skills("DevOps & Tools", []string{
+				"Docker", "Git", "Neovim", "Postman", "pnpm",
+			})
+			@components.Skills("Cloud", []string{
+				"AWS", "Vercel", "Railway",
+			})
+		}
+		@components.Cards("projects", "Featured Projects", "Some of my recent work and side projects") {
+			@components.CardImage(
+				"https://www.bluesquarebranding.com",
+				"https://res.cloudinary.com/dvpy0nzax/image/upload/w_400/v1754265674/bsb_ss_vtot6r.webp",
+				"Blue Square Branding",
+				"Building robust APIs and server-side applications with Go, focusing on performance and scalability.",
+				[]string{"Next.js", "Tailwind", "Typescript", "Vercel", "Railway", "PostgreSQL"},
+			)
+			@components.CardImage(
+				"https://www.mitsubishicomfort.com",
+				"https://res.cloudinary.com/dvpy0nzax/image/upload/w_400/v1754265674/comfort_ss_kv5u44.webp",
+				"Mitsubishi Comfort",
+				"Creating beautiful, responsive user interfaces with HTMX and Tailwind CSS for modern web experiences.",
+				[]string{"Next.js", "Strapi CMS", "PostgeSQL", "AWS", "Docker"},
+			)
+			@components.CardImage(
+				"https://github.com/steven-dyson/todo-finder.nvim",
+				"https://res.cloudinary.com/dvpy0nzax/image/upload/w_400/v1754265674/nvim_ss_j26shn.webp",
+				"todo-finder.nvim",
+				"Neovim plugin for buffer highlighting and project scanning of text flags",
+				[]string{"Lua"},
+			)
+			@components.CardImage(
+				"https://sdyson.dev",
+				"https://res.cloudinary.com/dvpy0nzax/image/upload/w_400/v1754265675/portfolio_it3jhz.webp",
+				"Personal Portfolio",
+				"Neovim plugin for buffer highlighting and project scanning of text flags",
+				[]string{"Go", "HTMX", "Tailwind", "DaisyUI", "Docker"},
+			)
+		}
+	}
+}

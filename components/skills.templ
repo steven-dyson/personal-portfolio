@@ -1,0 +1,12 @@
+package components
+
+templ Skills(heading string, skills []string) {
+	<div class="flex flex-col gap-8">
+		<p class="text-lg font-bold">{ heading }</p>
+		<div class="flex flex-wrap gap-5">
+			for _, skill := range skills {
+				<div class="badge badge-primary hover:rotate-12">{ skill }</div>
+			}
+		</div>
+	</div>
+}

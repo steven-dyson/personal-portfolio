@@ -1,0 +1,40 @@
+package components
+
+templ Hero(greeting string, name string, image string) {
+	<section class="hero max-w-7xl p-4 md:p-20 mt-16 mx-auto">
+		<div class="hero-content flex-col gap-8 md:gap-20 lg:flex-row-reverse">
+			<img
+				src={ image }
+				alt="image of steven dyson"
+				class="max-w-sm rounded-full shadow-2xl bg-white border-4 border-blue-600"
+				fetchpriority="high"
+				loading="eager"
+				width="400"
+				height="400"
+			/>
+			<div class="flex flex-col gap-8">
+				<h1 class="text-6xl font-bold flex flex-col gap-3">
+					<span>{ greeting }</span>
+					<span class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent">{ name }</span>
+				</h1>
+				<p class="text-lg">Full-stack developer passionate about building modern web applications with Go, HTMX, and cutting-edge technologies.</p>
+				<div class="flex gap-5">
+					<button type="button" class="btn btn-primary">
+						<span>
+							@Icon("envelope", "size-5")
+						</span>
+						Get in touch
+					</button>
+					<a href="https://github.com/steven-dyson" target="blank">
+						<button type="button" class="btn btn-outline hover:border-white hover:bg-primary">
+							<span>
+								@Icon("code-bracket", "size-5")
+							</span>
+							View GitHub
+						</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+}

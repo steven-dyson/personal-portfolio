@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/a-h/templ"
+	"github.com/steven-dyson/personal-portfolio/handlers"
 	"github.com/steven-dyson/personal-portfolio/pages"
 )
 
@@ -27,6 +28,9 @@ func main() {
 		filePath := filepath.Join("static/public", r.URL.Path[1:])
 		http.ServeFile(w, r, filePath)
 	})
+
+	// API
+	http.HandleFunc("/submit", handlers.Submit)
 
 	fmt.Println("Listening on :3000")
 	http.ListenAndServe(":3000", nil)

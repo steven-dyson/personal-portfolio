@@ -37,7 +37,7 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if elapsed < 10 {
+	if elapsed < 3 {
 		templ.Handler(components.Alert(components.AlertProps{Class: "alert-error", Message: "Bot activity detected"})).ServeHTTP(w, r)
 
 		return

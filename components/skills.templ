@@ -5,7 +5,7 @@ templ Skills(heading string, skills []string) {
 		<p class="text-lg font-bold">{ heading }</p>
 		<div class="flex flex-wrap gap-5">
 			for _, skill := range skills {
-				<div class="badge badge-primary hover:rotate-12">{ skill }</div>
+				<div class="badge badge-primary hover:rotate-12 transition-all duration-300">{ skill }</div>
 			}
 		</div>
 	</div>

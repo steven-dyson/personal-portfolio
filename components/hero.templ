@@ -1,6 +1,6 @@
 package components
 
-templ Hero(greeting string, name string, image string) {
+templ Hero(greeting string, name string, image string, p string) {
 	<section class="hero max-w-7xl p-4 md:p-20 mt-16 mx-auto">
 		<div class="hero-content flex-col gap-8 md:gap-20 lg:flex-row-reverse">
 			<img
@@ -17,7 +17,7 @@ templ Hero(greeting string, name string, image string) {
 					<span>{ greeting }</span>
 					<span class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent">{ name }</span>
 				</h1>
-				<p class="text-lg">Full-stack developer passionate about building modern web applications with Go, HTMX, and cutting-edge technologies.</p>
+				<p class="text-lg">{ p }</p>
 				<div class="flex gap-5">
 					<a href="mailto:steven.dyson@proton.me">
 						<button type="button" class="btn btn-primary">

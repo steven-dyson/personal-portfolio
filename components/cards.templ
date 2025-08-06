@@ -1,11 +1,9 @@
 package components
 
-templ Cards(anchor string, title string, p string) {
-	<section id={ anchor } class="flex flex-col gap-6 items-center p-8 py-20 max-w-6xl mx-auto">
-		<h2 class="text-4xl font-bold">{ title }</h2>
-		<p class="max-w-3xl text-xl text-center">{ p }</p>
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-			{ children... }
-		</div>
-	</section>
+templ Cards(title string, p string) {
+	<h2 class="text-4xl font-bold">{ title }</h2>
+	<p class="max-w-3xl text-xl text-center">{ p }</p>
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+		{ children... }
+	</div>
 }

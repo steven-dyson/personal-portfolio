@@ -15,7 +15,7 @@ templ Form(props FormProps) {
 	<p class="text-lg font-bold text-center">{ props.Sub }</p>
 	<div id="result"></div>
 	<form
-		class="flex flex-col gap-8"
+		class="flex flex-col gap-8 max-w-6xl w-full"
 		hx-post="/submit"
 		hx-target="#result"
 		hx-swap="innerHTML"

@@ -4,7 +4,10 @@ go 1.23.3
 
 tool github.com/a-h/templ/cmd/templ
 
-require github.com/a-h/templ v0.3.924
+require (
+	github.com/a-h/templ v0.3.924
+	github.com/resend/resend-go/v2 v2.21.0
+)
 
 require (
 	github.com/a-h/parse v0.0.0-20250122154542-74294addb73e // indirect

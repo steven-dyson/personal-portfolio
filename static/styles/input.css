@@ -8,6 +8,7 @@
   prefersdark: false;
   color-scheme: light;
 
+  --font-sans: "Noto Sans";
   --color-base-100: #e9f0f5;
   --color-base-200: oklch(95% 0.03 240);
   --color-base-300: oklch(92% 0.04 240);
@@ -36,6 +37,7 @@
   prefersdark: true;
   color-scheme: dark;
 
+  --font-sans: "Noto Sans";
   --color-base-100: oklch(20.8% 0.042 265.755);
   --color-base-200: oklch(24% 0.02 240);
   --color-base-300: oklch(32% 0.03 240);

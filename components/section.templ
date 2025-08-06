@@ -1,0 +1,14 @@
+package components
+
+import "fmt"
+
+type SectionProps struct {
+	Id    string
+	Class string
+}
+
+templ Section(props SectionProps) {
+	<section id={ props.Id } class={ fmt.Sprintf("flex flex-col gap-6 items-center p-8 py-20 %s", props.Class) }>
+		{ children... }
+	</section>
+}

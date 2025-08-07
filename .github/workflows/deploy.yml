@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build-and-push:
@@ -12,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/personal-portfolio
+      IMAGE_NAME: ghcr.io/steven-dyson/personal-portfolio
       RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
       RAILWAY_STAGING_SERVICE_ID: ${{ secrets.RAILWAY_STAGING_SERVICE_ID }}
       RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}

@@ -1,0 +1,64 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/personal-portfolio
+      RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+      RAILWAY_STAGING_SERVICE_ID: ${{ secrets.RAILWAY_STAGING_SERVICE_ID }}
+      RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t $IMAGE_NAME:latest .
+          docker push $IMAGE_NAME:latest
+
+      - name: Update Railway staging service with new image
+        run: |
+          curl -X PATCH \
+            -H "Authorization: Bearer $RAILWAY_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"dockerDeploy\":{\"image\":\"$IMAGE_NAME:latest\"}}" \
+            "https://backboard.railway.app/project/$RAILWAY_PROJECT_ID/service/$RAILWAY_STAGING_SERVICE_ID"
+
+  deploy-production:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/your-image-name
+      RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+      RAILWAY_PRODUCTION_SERVICE_ID: ${{ secrets.RAILWAY_PRODUCTION_SERVICE_ID }}
+      RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+
+    steps:
+      - name: Deploy image to Railway production service
+        run: |
+          curl -X PATCH \
+            -H "Authorization: Bearer $RAILWAY_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"dockerDeploy\":{\"image\":\"$IMAGE_NAME:latest\"}}" \
+            "https://backboard.railway.app/project/$RAILWAY_PROJECT_ID/service/$RAILWAY_PRODUCTION_SERVICE_ID"

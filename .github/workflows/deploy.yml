@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Deploy to Railway
 
 on:
   push:
@@ -11,26 +11,25 @@ permissions:
   packages: write
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
+    environment: staging
     env:
-      IMAGE_NAME: ghcr.io/steven-dyson/personal-portfolio
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
       RAILWAY_SERVICE_ID: ${{ secrets.RAILWAY_SERVICE_ID }}
       RAILWAY_STAGING_ENVIRONMENT_ID: ${{ secrets.RAILWAY_STAGING_ENVIRONMENT_ID }}
-      RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-      RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+      IMAGE_NAME: ghcr.io/steven-dyson/personal-portfolio
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -41,96 +40,11 @@ jobs:
           docker build -t $IMAGE_NAME:latest .
           docker push $IMAGE_NAME:latest
 
-      - name: Update Railway staging service with new image
-        id: update-service
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli@latest
+
+      - name: Deploy to Railway
         run: |
-          response=$(curl -s -X POST https://backboard.railway.app/graphql/v2 \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $RAILWAY_API_TOKEN" \
-            -d '{
-              "query": "mutation UpdateServiceImage($id: String!, $input: ServiceUpdateInput!) { serviceUpdate(id: $id, input: $input) { id name source { image } } }",
-              "variables": {
-                "id": "'"$RAILWAY_SERVICE_ID"'",
-                "input": {
-                  "source": {
-                    "image": "'"$IMAGE_NAME:latest"'"
-                  }
-                }
-              }
-            }')
-          echo "$response"
-          if echo "$response" | jq -e '.errors' >/dev/null; then
-            echo "Error updating service: $response"
-            exit 1
-          fi
-          echo "Service updated successfully: $response"
-
-      - name: Redeploy Railway staging service
-        if: success()
-        run: |
-          response=$(curl -s -X POST https://backboard.railway.app/graphql/v2 \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $RAILWAY_API_TOKEN" \
-            -d '{
-              "query": "mutation ServiceInstanceRedeploy { serviceInstanceRedeploy(environmentId: \"'"$RAILWAY_STAGING_ENVIRONMENT_ID"'\", serviceId: \"'"$RAILWAY_SERVICE_ID"'\") }",
-              "variables": {}
-            }')
-          echo "$response"
-          if echo "$response" | jq -e '.errors' >/dev/null; then
-            echo "Error redeploying service: $response"
-            exit 1
-          fi
-          echo "Service redeployed successfully: $response"
-
-  deploy-production:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
-
-    env:
-      IMAGE_NAME: ghcr.io/steven-dyson/personal-portfolio
-      RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-      RAILWAY_PRODUCTION_SERVICE_ID: ${{ secrets.RAILWAY_PRODUCTION_SERVICE_ID }}
-      RAILWAY_PRODUCTION_ENVIRONMENT_ID: ${{ secrets.RAILWAY_PRODUCTION_ENVIRONMENT_ID }}
-      RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-
-    steps:
-      - name: Update Railway production service with new image
-        id: update-service
-        run: |
-          response=$(curl -s -X POST https://backboard.railway.app/graphql/v2 \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $RAILWAY_API_TOKEN" \
-            -d '{
-              "query": "mutation UpdateServiceImage($id: String!, $input: ServiceUpdateInput!) { serviceUpdate(id: $id, input: $input) { id name source { image } } }",
-              "variables": {
-                "id": "'"$RAILWAY_PRODUCTION_SERVICE_ID"'",
-                "input": {
-                  "source": {
-                    "image": "'"$IMAGE_NAME:latest"'"
-                  }
-                }
-              }
-            }')
-          echo "$response"
-          if echo "$response" | jq -e '.errors' >/dev/null; then
-            echo "Error updating service: $response"
-            exit 1
-          fi
-          echo "Service updated successfully: $response"
-
-      - name: Redeploy Railway production service
-        if: success()
-        run: |
-          response=$(curl -s -X POST https://backboard.railway.app/graphql/v2 \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $RAILWAY_API_TOKEN" \
-            -d '{
-              "query": "mutation ServiceInstanceRedeploy { serviceInstanceRedeploy(environmentId: \"'"$RAILWAY_PRODUCTION_ENVIRONMENT_ID"'\", serviceId: \"'"$RAILWAY_PRODUCTION_SERVICE_ID"'\") }",
-              "variables": {}
-            }')
-          echo "$response"
-          if echo "$response" | jq -e '.errors' >/dev/null; then
-            echo "Error redeploying service: $response"
-            exit 1
-          fi
-          echo "Service redeployed successfully: $response"
+          railway link --project=$RAILWAY_PROJECT_ID --environment=$RAILWAY_STAGING_ENVIRONMENT_ID --service=$RAILWAY_SERVICE_ID
+          railway variables set DOCKER_IMAGE=$IMAGE_NAME:latest
+          railway redeploy --service=$RAILWAY_SERVICE_ID

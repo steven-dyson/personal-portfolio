@@ -45,6 +45,9 @@ jobs:
 
       - name: Deploy to Railway
         run: |
-          railway link --project=$RAILWAY_PROJECT_ID --environment=$RAILWAY_STAGING_ENVIRONMENT_ID --service=$RAILWAY_SERVICE_ID
-          railway variables set DOCKER_IMAGE=$IMAGE_NAME:latest
-          railway redeploy --service=$RAILWAY_SERVICE_ID
+          RAILWAY_TOKEN=$RAILWAY_TOKEN railway link \
+            --project=$RAILWAY_PROJECT_ID \
+            --environment=$RAILWAY_STAGING_ENVIRONMENT_ID \
+            --service=$RAILWAY_SERVICE_ID
+          RAILWAY_TOKEN=$RAILWAY_TOKEN railway variables set DOCKER_IMAGE=$IMAGE_NAME:latest
+          RAILWAY_TOKEN=$RAILWAY_TOKEN railway redeploy --service=$RAILWAY_SERVICE_ID

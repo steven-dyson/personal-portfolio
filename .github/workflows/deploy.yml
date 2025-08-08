@@ -19,6 +19,7 @@ jobs:
       IMAGE_NAME: ghcr.io/steven-dyson/personal-portfolio
       RAILWAY_SERVICE_ID: ${{ secrets.RAILWAY_SERVICE_ID }}
       RAILWAY_STAGING_ENVIRONMENT_ID: ${{ secrets.RAILWAY_STAGING_ENVIRONMENT_ID }}
+      RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
       RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
 
     steps:
@@ -41,33 +42,45 @@ jobs:
           docker push $IMAGE_NAME:latest
 
       - name: Update Railway staging service with new image
+        id: update-service
         run: |
-          curl -X POST https://backboard.railway.app/graphql/v2 \
+          response=$(curl -s -X POST https://backboard.railway.app/graphql/v2 \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $RAILWAY_API_TOKEN" \
             -d '{
-              "query": "mutation UpdateServiceImage($input: ServiceUpdateInput!) { serviceUpdate(input: $input) { id name source { image } } }",
+              "query": "mutation UpdateServiceImage($id: String!, $input: ServiceUpdateInput!) { serviceUpdate(id: $id, input: $input) { id name source { image } } }",
               "variables": {
+                "id": "'"$RAILWAY_SERVICE_ID"'",
                 "input": {
-                  "projectId": "${{ secrets.RAILWAY_PROJECT_ID }}",
-                  "environmentId": "'"$RAILWAY_STAGING_ENVIRONMENT_ID"'",
-                  "serviceId": "'"$RAILWAY_SERVICE_ID"'",
                   "source": {
                     "image": "'"$IMAGE_NAME:latest"'"
                   }
                 }
               }
-            }'
+            }')
+          echo "$response"
+          if echo "$response" | jq -e '.errors' >/dev/null; then
+            echo "Error updating service: $response"
+            exit 1
+          fi
+          echo "Service updated successfully: $response"
 
       - name: Redeploy Railway staging service
+        if: success()
         run: |
-          curl -X POST https://backboard.railway.app/graphql/v2 \
+          response=$(curl -s -X POST https://backboard.railway.app/graphql/v2 \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $RAILWAY_API_TOKEN" \
             -d '{
               "query": "mutation ServiceInstanceRedeploy { serviceInstanceRedeploy(environmentId: \"'"$RAILWAY_STAGING_ENVIRONMENT_ID"'\", serviceId: \"'"$RAILWAY_SERVICE_ID"'\") }",
               "variables": {}
-            }'
+            }')
+          echo "$response"
+          if echo "$response" | jq -e '.errors' >/dev/null; then
+            echo "Error redeploying service: $response"
+            exit 1
+          fi
+          echo "Service redeployed successfully: $response"
 
   deploy-production:
     runs-on: ubuntu-latest
@@ -82,30 +95,42 @@ jobs:
 
     steps:
       - name: Update Railway production service with new image
+        id: update-service
         run: |
-          curl -X POST https://backboard.railway.app/graphql/v2 \
+          response=$(curl -s -X POST https://backboard.railway.app/graphql/v2 \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $RAILWAY_API_TOKEN" \
             -d '{
-              "query": "mutation UpdateServiceImage($input: ServiceUpdateInput!) { serviceUpdate(input: $input) { id name source { image } } }",
+              "query": "mutation UpdateServiceImage($id: String!, $input: ServiceUpdateInput!) { serviceUpdate(id: $id, input: $input) { id name source { image } } }",
               "variables": {
+                "id": "'"$RAILWAY_PRODUCTION_SERVICE_ID"'",
                 "input": {
-                  "projectId": "'"$RAILWAY_PROJECT_ID"'",
-                  "environmentId": "'"$RAILWAY_PRODUCTION_ENVIRONMENT_ID"'",
-                  "serviceId": "'"$RAILWAY_PRODUCTION_SERVICE_ID"'",
                   "source": {
                     "image": "'"$IMAGE_NAME:latest"'"
                   }
                 }
               }
-            }'
+            }')
+          echo "$response"
+          if echo "$response" | jq -e '.errors' >/dev/null; then
+            echo "Error updating service: $response"
+            exit 1
+          fi
+          echo "Service updated successfully: $response"
 
       - name: Redeploy Railway production service
+        if: success()
         run: |
-          curl -X POST https://backboard.railway.app/graphql/v2 \
+          response=$(curl -s -X POST https://backboard.railway.app/graphql/v2 \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $RAILWAY_API_TOKEN" \
             -d '{
               "query": "mutation ServiceInstanceRedeploy { serviceInstanceRedeploy(environmentId: \"'"$RAILWAY_PRODUCTION_ENVIRONMENT_ID"'\", serviceId: \"'"$RAILWAY_PRODUCTION_SERVICE_ID"'\") }",
               "variables": {}
-            }'
+            }')
+          echo "$response"
+          if echo "$response" | jq -e '.errors' >/dev/null; then
+            echo "Error redeploying service: $response"
+            exit 1
+          fi
+          echo "Service redeployed successfully: $response"
